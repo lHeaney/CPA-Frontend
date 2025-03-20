@@ -25,3 +25,8 @@ function App() {
 }
 
 export default App;
+
+await function createRecord()
+{
+  return console.log("We made a record");
+}

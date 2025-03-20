@@ -9,9 +9,10 @@ export const NewRecord = () =>
 
             <form name="NewRecordForm">
 
-                <button type="submit"
-                class='input_submit'
-                onClick="createRecord()">Submit New Record
+                <button type="button"
+                onClick={()=>{
+                    return (console.log("we made a record"));
+                }}>Submit New Record
                 </button>
             </form>
         </>
