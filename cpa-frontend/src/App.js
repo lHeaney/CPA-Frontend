@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter, Routes,  Route } from "react-router";
 import { MainFrame } from "./Pages/MainFrame";
 import {Login} from "./Pages/Login";
-import {Records} from "./Pages/Records";
+import {RecordSearch} from "./Pages/RecordSearch";
 import {NewRecord} from "./Pages/NewRecord";
 
 function App() {
@@ -13,9 +13,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainFrame/>}>
+            <Route index element={<Login/>}/>
             <Route path="Login" element={<Login/>}/>
-            <Route path="New Record" element={<NewRecord/>}/>
-            <Route path="Record Search" element={<Records/>}/>
+            <Route path="NewRecord" element={<NewRecord/>}/>
+            <Route path="RecordSearch" element={<RecordSearch/>}/>
         </Route>
       </Routes>
     </BrowserRouter>  
