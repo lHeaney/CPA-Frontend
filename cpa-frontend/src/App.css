@@ -9,3 +9,19 @@ nav a{
   margin-right: 10px;
 }
 
+table{
+  min-width: 500px;
+  padding: 20px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 10px;
+  margin-right: 0px;
+  border-color: beige;
+  border-style: double;
+
+}
+table th{
+  padding-bottom: 30px;
+  background-color: bisque;
+}
+
