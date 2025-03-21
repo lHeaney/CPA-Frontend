@@ -8,44 +8,42 @@ import { RecordCard } from "../components/RecordCard";
 export const RecordSearch = () =>
     {
 
+
+        //This is a filter we keep track of to help the user only see the records they want
         var filter =""
+        //This keeps track of the records on the client-side
         const [records, setRecords] = useState([]);
 
-        // const filterInput =()=>
-        // {
-        //     console.log(filter)
-        //     if(filter==""|| filter==null || filter== undefined)
-        //     {
-        //         return (()=>true)
-        //     }
-                
-        //     console.log("filter="+filter)
-        //     if(filter != undefined && filter!= null)
-        //     {
-        //         return (data)=>{
-        //             console.log(data)
-        //             return data.type==filter
-        //         }
-        //     }
-        //     return (()=>true)
-        // }
+        
 
+        //This is our get function. We are getting the list of all records, then filtering them on the client side.
+        //This only works because we have only one user and they technically have access to all records
+        //If we implemented multi-user this would change
         const getRecords = async(fill)=>{
             await axios.get('http://localhost:8080/records')
             .then(data=>{
                 try{
                     setRecords(data.data.filter((data)=>
                     {
-                        console.log(fill)
-                        if(fill==""|| fill==null || fill== undefined || fill == "All")
-                            return true
-                        else
-                            return data.type==fill
+                        // console.log(fill+" "+data.type)
+                        //This is our big "if" statement where we check if we are:
+                        // admin (full access to all records)
+                        // a user (access to records matching our username)
+                        //not logged in (no access)
+                        if(localStorage.getItem("username")==="admin" || data.owner===localStorage.getItem("username"))
+                        {
+                            if(fill===""|| fill===null || fill=== undefined || fill === "All")
+                                return true
+                            else
+                                return data.type===fill 
+                        } 
+                            
+                        return false
                     }
 
                     ).map(input=>{
                     return {
-                        record: new Record(input.id, input.owner, input.type, input.total_revenue, input.taxes_paid, input.taxes_owed, input.status),
+                        record: new Record(input.id, input.owner, input.type, input.total_revenue, input.taxes_owed, input.taxes_paid,  input.status),
                         id:input?.id,
                         owner: input?.owner,
                         type: input?.type,
@@ -68,17 +66,21 @@ export const RecordSearch = () =>
         })
         }
 
+
+        //This is the function we pass down to our RecordCard component, that allows it to update itself and the original value in the database
         const updateFile = async(record, newType)=>
         {
-            // console.log("update?"+record.id +" "+newType)
+            console.log("update?"+record.id +" "+newType)
             try{
                 await axios.put("http://localhost:8080/records/"+record.id,{
                         id:record.id,
                         owner:record.owner,
-                        type:newType,
+                        type:newType,//--Here is where we make a change: we are inserting the passed parameter "newtype" into the put request body
                         total_revenue:record.total_revenue,
-                        taxes_owed:record.taxes_owed,
-                        taxes_paid:record.taxes_paid,
+                        // taxes_owed:record.taxes_owed,
+                        // taxes_paid:record.taxes_paid,//This is a quick fix for a discovered issue: the taxes owed/paid are being swapped somewhere
+                        taxes_owed:record.taxes_paid,
+                        taxes_paid:record.taxes_owed,
                         status:record.status
                     } ).then(async ()=>{
                     getRecords(filter);
@@ -90,6 +92,7 @@ export const RecordSearch = () =>
             }
              
         }
+        //Simple delete function we pass along to the recordCard so it can properly delete itself
         const deleteFile =async(id)=>
         {
             console.log("delete?"+id)
@@ -102,19 +105,23 @@ export const RecordSearch = () =>
 
         
         return(
+            //this is where the HTML of the page is set up. We have a label, a button to get the records,
+            // a header for our table with filtering implemented
+            // and then we call Record Card for each file's record
+            //this is also where we pass Update and Delete File functions
         <> 
-        <button type="button"
-            onClick={()=>{return (getRecords(filter));}}>Get Records
-        </button>
+        
             <h1>Records</h1>
-
+            <button type="button"
+                onClick={()=>{return (getRecords(filter));}}>Get Records
+            </button>
             <table>
                 <thead>
                     <tr>
                     <th>Record Number</th>
                     <th>Owner</th>
-                    <th>All Types
-                        <select name="typeFilter" id="typeFilter"
+                    <th>
+                        <select name="typeFilter" id="typeFilter" 
                         defaultValue="All"
                         onChange={()=>{
                             filter = document.getElementById("typeFilter").value
@@ -131,8 +138,9 @@ export const RecordSearch = () =>
                         </select>
                     </th>
                     <th>Total Revenue</th>
-                    <th>Taxes Owed</th>
                     <th>Taxes Paid</th>
+                    <th>Taxes Owed</th>
+                    {/* <th>Taxes Paid</th> */}
                     <th>Status</th>
                     <th>Delete</th>
                     </tr>

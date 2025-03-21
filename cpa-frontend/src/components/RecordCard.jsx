@@ -1,8 +1,12 @@
-import { getValue } from "@testing-library/user-event/dist/utils"
+
 
 
 export const RecordCard = (properties) =>{
     
+    //We declared these variables in the function scope so we could dynamically set IDs for UI elements, which allows us to access them later
+    //Otherwise, we would be unable to access them
+    //as this recordCard will be created multiple times
+    //so saying id="1" would set all UI element ids to "1"
     let myId = properties.record.id
     let myType = properties.record.type
 
@@ -29,14 +33,15 @@ export const RecordCard = (properties) =>{
                                     <option value="International">International</option>
                                 </select>
                                 <button name="UpdateType" 
-                                 onClick={()=>properties.updateFile(properties.record, myType)}
-                                >Update </button>
+                                 onClick={()=>properties.updateFile(properties.record, myType)/*Call the update file function we were passed from RecordSearch */}
+                                >Update</button>
+                                
                         </td>
                         <td>{properties.record.total_revenue}</td>
                         <td>{properties.record.taxes_owed}</td>
                         <td>{properties.record.taxes_paid}</td>
                         <td>{properties.record.status}</td>
-                        <td><button name="Delete" onClick={()=>properties.deleteFile(properties.record.id)}>Delete this file </button> </td>
+                        <td><button name="Delete" onClick={()=>properties.deleteFile(properties.record.id)}>X</button> Delete this File</td>
                     </tr>
     )
             
