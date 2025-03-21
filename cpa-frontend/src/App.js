@@ -5,9 +5,18 @@ import { MainFrame } from "./Pages/MainFrame";
 import {Login} from "./Pages/Login";
 import {RecordSearch} from "./Pages/RecordSearch";
 import {NewRecord} from "./Pages/NewRecord";
+import { React } from "react";
+import { createContext } from "react";
+
+
+export const appContext = createContext("Dark");
 
 function App() {
+  <appContext.Provider value="">
+  <LoginData />
+ </appContext.Provider>
   
+
   return (
     <>
     <BrowserRouter>
@@ -26,7 +35,8 @@ function App() {
 
 export default App;
 
-await function createRecord()
+function LoginData()
 {
-  return console.log("We made a record");
+  const value = React.useContext(LoginData)
+  return value
 }

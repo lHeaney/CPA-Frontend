@@ -2,10 +2,9 @@
 import {Header} from "../components/Header";
 import { Outlet } from "react-router";
 
-document.cookie={
-    username:"",
-    password:""
-}
+var username = ""
+var password = ""
+
 
 export const MainFrame = ()=>{
 

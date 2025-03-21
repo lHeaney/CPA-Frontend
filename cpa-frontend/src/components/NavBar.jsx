@@ -1,6 +1,7 @@
 
 import "../App.css";
 import { Link } from "react-router";
+
 export const NavBar =()=>
     {
         const links =[
@@ -10,10 +11,8 @@ export const NavBar =()=>
         ]
         return (
         <nav>
-                {links.filter(link=>{ return true/*(link.id ==3)*/})
-                
-                .map(link => {
-                        return (<Link to={link.linkDestination}>{link.linkname}</Link>);
+                {links.filter(link=>{if(link.id==3)return true} ).map(link => {
+                        return (<Link to={link.linkDestination} key={link.id}>{link.linkname}</Link>);
                         }
                     )
                     }

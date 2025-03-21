@@ -6,9 +6,7 @@ export const Header = () => {
     return (
         <>
             <header>
-                header yea?
                 <NavBar>
-
                 </NavBar>
             </header>
             

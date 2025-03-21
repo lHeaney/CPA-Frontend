@@ -24,4 +24,9 @@ table th{
   padding-bottom: 30px;
   background-color: bisque;
 }
-
+table tbody{
+  background-color: lavender;
+}
+/* .Record{
+  background-color: fuchsia;
+} */
